@@ -27,13 +27,11 @@ class Service {
                 return
             }
             
-            guard let data = data else { return }
+            guard let data = data, let datas = data.parseData(removeString: "null,") else { return }
             
             do {
                 
-                guard let datas = data.parseData(removeString: "null,") else { return }
                 let pokemon = try JSONDecoder().decode([PokemonDecodable].self, from: datas)
-                print(pokemon[0].evolutionChain as Any)
                 
             } catch let error {
                 
@@ -43,7 +41,7 @@ class Service {
             
             
             do {
-                guard let resultArray = try JSONSerialization.jsonObject(with: data, options: []) as? [AnyObject] else { return }
+                guard let resultArray = try JSONSerialization.jsonObject(with: datas, options: []) as? [AnyObject] else { return }
                 
                 for (key, result) in resultArray.enumerated() {
                     
