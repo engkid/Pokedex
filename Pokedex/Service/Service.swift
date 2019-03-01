@@ -30,6 +30,19 @@ class Service {
             guard let data = data else { return }
             
             do {
+                
+                guard let datas = data.parseData(removeString: "null,") else { return }
+                let pokemon = try JSONDecoder().decode([PokemonDecodable].self, from: datas)
+                print(pokemon[0].evolutionChain as Any)
+                
+            } catch let error {
+                
+                print("Failed to create json with error: ", error.localizedDescription)
+                
+            }
+            
+            
+            do {
                 guard let resultArray = try JSONSerialization.jsonObject(with: data, options: []) as? [AnyObject] else { return }
                 
                 for (key, result) in resultArray.enumerated() {

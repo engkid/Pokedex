@@ -6,6 +6,7 @@
 //  Copyright © 2019 Engkit Satia Riswara. All rights reserved.
 //
 
+import Foundation
 import UIKit
 
 struct EvolutionChain {
@@ -39,6 +40,28 @@ struct EvolutionChain {
         return results
         
     }
+    
+}
+
+struct PokemonDecodable: Decodable {
+    
+    let name: String?
+    let imageUrl: String?
+    let id: Int?
+    let weight: Int?
+    let height: Int?
+    let defense: Int?
+    let attack: Int?
+    let description: String?
+    let type: String?
+    let evolutionChain: [EvolutionChains]?
+    
+}
+
+struct EvolutionChains: Decodable {
+    
+    let id: String?
+    let name: String?
     
 }
 

@@ -62,3 +62,17 @@ extension UIView {
     }
     
 }
+
+extension Data {
+    
+    func parseData(removeString string: String) -> Data? {
+        
+        let dataAsString = String(data: self, encoding: String.Encoding.utf8)
+        
+        let parsedDataString = dataAsString?.replacingOccurrences(of: string, with: "")
+        guard let data = parsedDataString?.data(using: String.Encoding.utf8) else { return nil }
+        return data
+        
+    }
+    
+}
