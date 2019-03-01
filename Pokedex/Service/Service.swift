@@ -13,6 +13,43 @@ class Service {
     let BASE_URL = "https://pokedex-bb36f.firebaseio.com/pokemon.json"
     static let shared = Service()
     
+    func fetchPokemons(completion: @escaping ([PokemonDecodable]) -> ()) {
+        
+        guard let url = URL(string: BASE_URL) else { return }
+        
+        URLSession.shared.dataTask(with: url) { (data, response, error) in
+            
+            // handle error
+            if let error = error {
+                print("Failed to fetch data with error: ", error.localizedDescription)
+                return
+            }
+            
+            guard let data = data, let datas = data.parseData(removeString: "null,") else { return }
+            
+            do {
+                
+                let pokemon = try JSONDecoder().decode([PokemonDecodable].self, from: datas)
+                
+                var pokeDeco = [PokemonDecodable]()
+                
+                pokemon.forEach({ (pokemonDeco) in
+                    pokeDeco.append(pokemonDeco)
+                })
+                
+                completion(pokeDeco)
+                print("pokemonDecodable => ", pokeDeco.first?.imageUrl)
+                
+            } catch let error {
+                
+                print("Failed to create json with error: ", error.localizedDescription)
+                
+            }
+            
+        }.resume()
+        
+    }
+    
     func fetchPokemon(completion: @escaping ([Pokemon]) -> ()) {
         var pokemonArray = [Pokemon]()
         
@@ -28,17 +65,6 @@ class Service {
             }
             
             guard let data = data, let datas = data.parseData(removeString: "null,") else { return }
-            
-            do {
-                
-                let pokemon = try JSONDecoder().decode([PokemonDecodable].self, from: datas)
-                
-            } catch let error {
-                
-                print("Failed to create json with error: ", error.localizedDescription)
-                
-            }
-            
             
             do {
                 guard let resultArray = try JSONSerialization.jsonObject(with: datas, options: []) as? [AnyObject] else { return }

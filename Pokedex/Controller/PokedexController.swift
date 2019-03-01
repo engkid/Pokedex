@@ -14,6 +14,7 @@ class PokedexController: UICollectionViewController {
     
     // MARK: - Properties
     var pokemon = [Pokemon]()
+    var pokemons = [PokemonDecodable]()
     var filteredPokemon = [Pokemon]()
     var inSearchMode = false
     var searchBar: UISearchBar!
@@ -39,6 +40,8 @@ class PokedexController: UICollectionViewController {
         
         configureViewComponents()
         fetchPokemon()
+        fetchPokemons()
+        
     }
     
     // MARK: - Selectors
@@ -61,6 +64,17 @@ class PokedexController: UICollectionViewController {
                 self.collectionView.reloadData()
             }
         }
+    }
+    
+    func fetchPokemons() {
+        
+        Service.shared.fetchPokemons { (pokemons) in
+            DispatchQueue.main.async {
+                self.pokemons = pokemons
+                self.collectionView.reloadData()
+            }
+        }
+        
     }
     
     // MARK: - Helper Functions
