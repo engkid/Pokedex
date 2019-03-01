@@ -111,6 +111,21 @@ class PokedexController: UICollectionViewController {
             self.infoView.removeFromSuperview()
             self.navigationItem.rightBarButtonItem?.isEnabled = true
             guard let pokemon = pokemon else { return }
+            
+            guard let evoChain = pokemon.evolutionChain else { return }
+            
+            var pokemonEvoArray = [Pokemon]()
+
+            let evolutionChain = EvolutionChain(evolutionArray: evoChain)
+
+            let evoIds = evolutionChain.evolutionIds
+
+            evoIds.forEach({ (id) in
+                pokemonEvoArray.append(self.pokemon[id - 1])
+            })
+
+            pokemon.evoArray = pokemonEvoArray
+            
             self.showPokemonInfoController(withPokemon: pokemon)
         }
         
@@ -186,8 +201,6 @@ extension PokedexController {
     
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let poke = inSearchMode ? filteredPokemon[indexPath.item] : pokemon[indexPath.item]
-        
-        
         
         if let evoChain = poke.evolutionChain {
             
