@@ -38,7 +38,6 @@ class Service {
                 })
                 
                 completion(pokeDeco)
-                print("pokemonDecodable => ", pokeDeco.first?.imageUrl)
                 
             } catch let error {
                 
